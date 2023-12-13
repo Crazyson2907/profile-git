@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +16,11 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,6 +28,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,10 +59,21 @@ fun UserListItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(4.dp),
-                horizontalArrangement = Arrangement.Start
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 ProfilePic(item.avatar_url)
                 ProfileDetail(user = item)
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(
+                    onClick = { /*TODO*/ },
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.StarOutline,
+                        contentDescription = "Favorites",
+                        tint = Color.LightGray
+                    )
+                }
             }
         }
     }
@@ -74,10 +92,9 @@ fun ProfileDetail(user: User) {
     ) {
         Text(
             text = user.login,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.titleMedium,
             maxLines = 1,
-            overflow = TextOverflow.Clip
-
+            overflow = TextOverflow.Clip,
         )
     }
 }
@@ -91,7 +108,7 @@ fun ProfilePic(avatarUrl: String) {
         modifier = Modifier
             .size(84.dp)
             .padding(8.dp)
-            .clip(RoundedCornerShape(corner = CornerSize(16.dp))),
+            .clip(RoundedCornerShape(corner = CornerSize(1.dp))),
 
         ) {
         GlideImage(
@@ -99,8 +116,7 @@ fun ProfilePic(avatarUrl: String) {
             contentDescription = "Profile Image",
             modifier = Modifier
                 .size(84.dp)
-                .padding(8.dp)
-                .clip(RoundedCornerShape(corner = CornerSize(16.dp))),
+                .clip(RoundedCornerShape(corner = CornerSize(1.dp))),
             contentScale = ContentScale.Crop
         )
     }
