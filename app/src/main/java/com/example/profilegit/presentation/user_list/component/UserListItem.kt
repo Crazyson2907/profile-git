@@ -2,6 +2,7 @@ package com.example.profilegit.presentation.user_list.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -34,7 +35,7 @@ import com.example.profilegit.ui.theme.AppTheme
 @Composable
 fun UserListItem(
     item: User,
-    modifier: Modifier = Modifier,
+    onItemClick: (User) -> Unit,
 ) {
 
     Card(
@@ -42,6 +43,7 @@ fun UserListItem(
             .wrapContentSize()
             .padding(8.dp, 4.dp)
             .fillMaxWidth()
+            .clickable { onItemClick(item) }
             .background(color = AppTheme.colors.colorSecondary),
         shape = RoundedCornerShape(0.dp),
     ) {
@@ -50,7 +52,7 @@ fun UserListItem(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(4.dp),
-                // horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Start
             ) {
                 ProfilePic(item.avatar_url)
                 ProfileDetail(user = item)
@@ -88,7 +90,7 @@ fun ProfilePic(avatarUrl: String) {
         border = BorderStroke(2.dp, color = AppTheme.colors.colorSecondary),
         modifier = Modifier
             .size(84.dp)
-            // .padding(8.dp)
+            .padding(8.dp)
             .clip(RoundedCornerShape(corner = CornerSize(16.dp))),
 
         ) {
@@ -97,31 +99,21 @@ fun ProfilePic(avatarUrl: String) {
             contentDescription = "Profile Image",
             modifier = Modifier
                 .size(84.dp)
-            // .padding(8.dp)
-            // .clip(RoundedCornerShape(corner = CornerSize(16.dp)))
-            ,
+                .padding(8.dp)
+                .clip(RoundedCornerShape(corner = CornerSize(16.dp))),
             contentScale = ContentScale.Crop
         )
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-fun UserItemPreview(user: User) {
-    Card(
-        modifier = Modifier
-            // .wrapContentSize()
-            .fillMaxWidth()
-            .padding(16.dp)
-            .clip(RoundedCornerShape(4.dp))
-            .background(color = AppTheme.colors.colorSecondary),
-        shape = RoundedCornerShape(0.dp),
-    ) {
-        Row {
-            ProfilePic(avatarUrl = user.avatar_url)
-            ProfileDetail(user = user)
-        }
-
-    }
-
+fun PreviewUserListItem() {
+    UserListItem(
+        item = User(
+            id = 1,
+            avatar_url = "https://avatars.githubusercontent.com/u/1?v=4",
+            login = "mojombo"
+        ),
+        onItemClick = {})
 }
