@@ -1,9 +1,13 @@
 package com.example.profilegit.presentation.user_list
 
-import com.example.profilegit.domain.model.User
+import com.example.profilegit.domain.core.model.User
 
-data class UserListState(
-    val isLoading: Boolean = false,
-    val users: List<User> = emptyList(),
-    val error: String = ""
-)
+sealed class UserListState {
+    object Loading : UserListState()
+
+    data class ListSuccessfullyFetched(
+        val list: List<User>
+    ) : UserListState()
+
+    object ErrorOccurred : UserListState()
+}

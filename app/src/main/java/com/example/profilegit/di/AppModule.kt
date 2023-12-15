@@ -1,9 +1,11 @@
 package com.example.profilegit.di
 
+import com.example.profilegit.Application
 import com.example.profilegit.common.Constants
-import com.example.profilegit.data.network.ApiService
-import com.example.profilegit.data.repository.RepositoryImpl
-import com.example.profilegit.domain.repository.Repository
+import com.example.profilegit.data.local.GitUsersDatabase
+import com.example.profilegit.domain.network.ApiService
+import com.example.profilegit.data.network.RepositoryImpl
+import com.example.profilegit.domain.network.repository.Repository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,11 +26,5 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideRepository(apiService: ApiService): Repository {
-        return RepositoryImpl(apiService)
     }
 }

@@ -36,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.profilegit.domain.model.User
+import com.example.profilegit.domain.core.model.User
 import com.example.profilegit.ui.theme.AppTheme
 
 @Composable
@@ -62,7 +62,7 @@ fun UserListItem(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ProfilePic(item.avatar_url)
+                ProfilePic(item.avatarUrl)
                 ProfileDetail(user = item)
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(
@@ -128,7 +128,7 @@ fun PreviewUserListItem() {
     UserListItem(
         item = User(
             id = 1,
-            avatar_url = "https://avatars.githubusercontent.com/u/1?v=4",
+            avatarUrl = "https://avatars.githubusercontent.com/u/1?v=4",
             login = "mojombo"
         ),
         onItemClick = {})

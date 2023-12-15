@@ -1,4 +1,4 @@
-package com.example.profilegit.data.network
+package com.example.profilegit.domain.network
 
 import com.example.profilegit.data.dto.DetailsDto
 import com.example.profilegit.data.dto.UserDto

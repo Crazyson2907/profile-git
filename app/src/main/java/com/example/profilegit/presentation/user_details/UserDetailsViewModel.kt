@@ -1,16 +1,16 @@
 package com.example.profilegit.presentation.user_details
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.profilegit.common.Resource
 import com.example.profilegit.common.Constants
-import com.example.profilegit.domain.use_case.GetDetailsUseCase
+import com.example.profilegit.common.Status
+import com.example.profilegit.domain.core.use_case.GetDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,8 +19,9 @@ class UserDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(UserDetailState())
-    val state: State<UserDetailState> = _state
+    private val _state : MutableStateFlow<UserDetailState> =
+        MutableStateFlow(UserDetailState.Loading)
+    val state: StateFlow<UserDetailState> = _state
 
     init {
         savedStateHandle.get<String>(Constants.PARAM_LOGIN)?.let { login ->
@@ -28,19 +29,29 @@ class UserDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun getDetails(login: String) {
-        getDetailsUseCase(login).onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _state.value = UserDetailState(user = result.data)
-                }
-                is Resource.Error -> {
-                    _state.value = UserDetailState(error = result.message ?:  "An unexpected error occurred")
-                }
-                is Resource.Loading -> {
-                    _state.value = UserDetailState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
+    private fun getDetails(login:String) {
+        viewModelScope.launch {
+            getDetailsUseCase.execute(login)
+                .onStart {
+                    _state.value = UserDetailState.Loading
+                }.collect {
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            _state.value = if (it.data != null) {
+                                UserDetailState.DetailsSuccessfullyFetched(it.data)
+                            } else {
+                                UserDetailState.ErrorOccurred
+                            }
+                        }
+                        Status.ERROR -> {
+                            UserDetailState.ErrorOccurred
+                        }
+
+                        Status.LOADING -> {
+                            UserDetailState.Loading
+                        }
+                    }
+        }
+        }
     }
 }

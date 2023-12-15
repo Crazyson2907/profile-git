@@ -1,14 +1,14 @@
 package com.example.profilegit.presentation.user_list
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.profilegit.common.Resource
-import com.example.profilegit.domain.use_case.GetUsersUseCase
+import com.example.profilegit.common.Status
+import com.example.profilegit.domain.core.use_case.GetUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,26 +16,38 @@ class UserListViewModel @Inject constructor(
     private val getUsersUseCase: GetUsersUseCase
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(UserListState())
-    val state: State<UserListState> = _state
+    private val _state: MutableStateFlow<UserListState> =
+        MutableStateFlow(UserListState.Loading)
+    val state: StateFlow<UserListState> = _state
 
     init {
         getUsers()
     }
 
     private fun getUsers() {
-        getUsersUseCase().onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _state.value = UserListState(users = result.data ?: emptyList())
+        viewModelScope.launch {
+            getUsersUseCase.execute()
+                .onStart {
+                    _state.value = UserListState.Loading
+                }.collect {
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            _state.value = if (it.data != null) {
+                                UserListState.ListSuccessfullyFetched(it.data)
+                            } else {
+                                UserListState.ErrorOccurred
+                            }
+                        }
+
+                        Status.ERROR -> {
+                            UserListState.ErrorOccurred
+                        }
+
+                        Status.LOADING -> {
+                            UserListState.Loading
+                        }
+                    }
                 }
-                is Resource.Error -> {
-                    _state.value = UserListState(error = result.message ?: "")
-                }
-                is Resource.Loading -> {
-                    _state.value = UserListState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
+        }
     }
 }
