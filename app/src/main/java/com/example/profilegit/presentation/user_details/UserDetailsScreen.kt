@@ -34,6 +34,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.profilegit.domain.core.model.Details
+import com.example.profilegit.presentation.components.CircularProgress
 import com.example.profilegit.presentation.components.ToolbarDetail
 import com.example.profilegit.ui.theme.AppTheme
 
@@ -45,7 +46,7 @@ fun UserDetailsScreen(
     val state = viewModel.state.collectAsState()
 
     when (val currentState = state.value) {
-        is UserDetailState.Loading -> CircularProgressIndicator()
+        is UserDetailState.Loading -> CircularProgress()
         is UserDetailState.DetailsSuccessfullyFetched -> Profile(navController, currentState.user)
         is UserDetailState.ErrorOccurred -> Text("Error: ${currentState}")
     }
@@ -60,23 +61,16 @@ fun Profile(navController: NavHostController, user: Details) {
             ToolbarDetail(navController = navController)
         }
     ) { innerPadding ->
-        user.let {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .background(Color.White),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(32.dp))
-                ProfilePic(avatarUrl = user.avatarUrl)
-                ProfileDetail(user = user)
-            }
-        }
-        Box(
-            modifier = Modifier,
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .background(Color.White),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(32.dp))
+            ProfilePic(avatarUrl = user.avatarUrl)
+            ProfileDetail(user = user)
         }
     }
 }

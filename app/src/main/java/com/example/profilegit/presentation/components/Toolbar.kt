@@ -22,7 +22,7 @@ import com.example.profilegit.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Toolbar() {
+fun Toolbar(onIconButtonClicked: () -> Unit) {
     TopAppBar(
         title = {
             Text(
@@ -33,7 +33,7 @@ fun Toolbar() {
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Gray),
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = onIconButtonClicked) {
                 Icon()
             }
         }

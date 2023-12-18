@@ -19,7 +19,7 @@ class UserDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _state : MutableStateFlow<UserDetailState> =
+    private val _state: MutableStateFlow<UserDetailState> =
         MutableStateFlow(UserDetailState.Loading)
     val state: StateFlow<UserDetailState> = _state
 
@@ -29,7 +29,7 @@ class UserDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun getDetails(login:String) {
+    private fun getDetails(login: String) {
         viewModelScope.launch {
             getDetailsUseCase.execute(login)
                 .onStart {
@@ -43,6 +43,7 @@ class UserDetailsViewModel @Inject constructor(
                                 UserDetailState.ErrorOccurred
                             }
                         }
+
                         Status.ERROR -> {
                             UserDetailState.ErrorOccurred
                         }
@@ -51,7 +52,7 @@ class UserDetailsViewModel @Inject constructor(
                             UserDetailState.Loading
                         }
                     }
-        }
+                }
         }
     }
 }

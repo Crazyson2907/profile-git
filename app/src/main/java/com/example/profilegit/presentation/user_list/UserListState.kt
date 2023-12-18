@@ -6,7 +6,8 @@ sealed class UserListState {
     object Loading : UserListState()
 
     data class ListSuccessfullyFetched(
-        val list: List<User>
+        val list: List<User>,
+        val isSorted: Boolean = false
     ) : UserListState()
 
     object ErrorOccurred : UserListState()
