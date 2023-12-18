@@ -5,10 +5,10 @@ import com.example.profilegit.domain.core.model.Details
 
 interface GetUserDetailsFromCacheUseCase {
 
-    suspend fun execute(login: String): Details
+    suspend fun execute(login: String): Details?
 
     class Base(private val repository: UserCacheRepository): GetUserDetailsFromCacheUseCase {
-        override suspend fun execute(login: String): Details {
+        override suspend fun execute(login: String): Details? {
             return repository.getDetails(login)
         }
 

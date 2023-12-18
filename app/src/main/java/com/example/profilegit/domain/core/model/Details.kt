@@ -8,7 +8,7 @@ data class Details(
     val location: String?,
     val login: String,
     val name: String,
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean? = false
 ) {
     fun toDetailsEntity(): DetailsEntity =
         DetailsEntity(

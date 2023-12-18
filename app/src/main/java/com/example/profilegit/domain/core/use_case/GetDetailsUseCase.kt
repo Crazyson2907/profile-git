@@ -14,13 +14,16 @@ interface GetDetailsUseCase {
         private val fetchUserDetailsFromApiUseCase: FetchUserDetailsFromApiUseCase,
         private val getUserDetailsFromCacheUseCase: GetUserDetailsFromCacheUseCase
     ) : GetDetailsUseCase {
-        override suspend fun execute(login: String): Flow<Resource<Details>> {
-            getUserDetailsFromCacheUseCase.execute(login).let {
-                if (it == null) {
-                    return fetchUserDetailsFromApiUseCase.execute(login)
-                } else {
-                    return flow { emit(Resource.success(it)) }
-                }
+        override suspend fun execute(login: String): Flow<Resource<Details>> = flow {
+
+            val cachedDetails =  getUserDetailsFromCacheUseCase.execute(login)
+            if (cachedDetails != null) {
+                emit(Resource.success(cachedDetails))
+            } else {
+                fetchUserDetailsFromApiUseCase.execute(login)
+                    .collect { apiResult ->
+                        emit(apiResult)
+                    }
             }
         }
 

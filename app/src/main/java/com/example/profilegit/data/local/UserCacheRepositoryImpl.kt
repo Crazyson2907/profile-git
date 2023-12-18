@@ -24,9 +24,10 @@ class UserCacheRepositoryImpl(
         }
     }
 
-    override suspend fun getDetails(login: String): Details = coroutineScope {
+    override suspend fun getDetails(login: String): Details? = coroutineScope {
         withContext(ioDispatcher) {
-            dao.getUserDetails(login).toDetails()
+            val detailsEntity = dao.getUserDetails(login)
+            return@withContext detailsEntity?.toDetails()
         }
     }
 
