@@ -27,6 +27,10 @@ import com.example.profilegit.presentation.components.Toolbar
 import com.example.profilegit.presentation.user_list.component.CategoryHeader
 import com.example.profilegit.presentation.user_list.component.UserListItem
 
+/**
+ * Main screen with the list of users
+ *
+ */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

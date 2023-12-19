@@ -14,6 +14,11 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel of the UserListScreen
+ * Serves as a mediator for fetching the list of users
+ * and update the user if it added to favorites
+ */
 @HiltViewModel
 class UserListViewModel @Inject constructor(
     private val getUsersUseCase: GetUsersUseCase,

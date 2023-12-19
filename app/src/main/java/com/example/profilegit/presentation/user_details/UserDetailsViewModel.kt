@@ -17,6 +17,11 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel of the UserDetailsScreen
+ * Serves as a mediator for fetching the details of a user
+ * and update the user if it added to favorites
+ */
 @HiltViewModel
 class UserDetailsViewModel @Inject constructor(
     private val getDetailsUseCase: GetDetailsUseCase,

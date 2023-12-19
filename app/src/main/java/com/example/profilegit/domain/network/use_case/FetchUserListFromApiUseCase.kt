@@ -7,6 +7,9 @@ import com.example.profilegit.domain.network.repository.Repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 
+/**
+ * Api use case
+ */
 interface FetchUserListFromApiUseCase {
 
     suspend fun execute(): Flow<Resource<List<User>>>

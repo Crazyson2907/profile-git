@@ -38,6 +38,11 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.profilegit.domain.core.model.User
 import com.example.profilegit.ui.theme.AppTheme
 
+/**
+ * Item of the UserList
+ *
+ */
+
 @Composable
 fun UserListItem(
     item: User,
@@ -135,5 +140,6 @@ fun PreviewUserListItem() {
         ),
         onItemClick = {},
         onFavoriteClick = {},
-        isFavorite = true)
+        isFavorite = true
+    )
 }

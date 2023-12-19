@@ -7,6 +7,9 @@ import com.example.profilegit.domain.network.use_case.FetchUserListFromApiUseCas
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+/**
+ * Presentation use case
+ */
 interface GetUsersUseCase {
     suspend fun execute(): Flow<Resource<List<User>>>
 

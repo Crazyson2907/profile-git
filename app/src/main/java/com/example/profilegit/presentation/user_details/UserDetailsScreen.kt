@@ -37,6 +37,10 @@ import com.example.profilegit.presentation.components.CircularProgress
 import com.example.profilegit.presentation.components.ToolbarDetail
 import com.example.profilegit.ui.theme.AppTheme
 
+/**
+ * The screen with user details
+ *
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserDetailsScreen(
@@ -60,13 +64,17 @@ fun UserDetailsScreen(
     ) { innerPadding ->
 
 
-    when (val currentState = state.value) {
-        is UserDetailState.Loading -> CircularProgress()
-        is UserDetailState.DetailsSuccessfullyFetched -> Profile(currentState.details, innerPadding)
-        is UserDetailState.ErrorOccurred -> Text("Error: $currentState")
-        else -> {}
+        when (val currentState = state.value) {
+            is UserDetailState.Loading -> CircularProgress()
+            is UserDetailState.DetailsSuccessfullyFetched -> Profile(
+                currentState.details,
+                innerPadding
+            )
+
+            is UserDetailState.ErrorOccurred -> Text("Error: $currentState")
+            else -> {}
+        }
     }
-}
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
