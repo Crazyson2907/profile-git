@@ -49,11 +49,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-//    java {
-//        toolchain {
-//            languageVersion.set(JavaLanguageVersion.of(17))
-//        }
-//    }
 }
 
 dependencies {
