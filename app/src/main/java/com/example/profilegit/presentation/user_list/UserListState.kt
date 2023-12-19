@@ -10,5 +10,9 @@ sealed class UserListState {
         val isSorted: Boolean = false
     ) : UserListState()
 
+    data class UserSuccessfullyFetched(
+        val user: User
+    ): UserListState()
+
     object ErrorOccurred : UserListState()
 }

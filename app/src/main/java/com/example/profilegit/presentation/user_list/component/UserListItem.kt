@@ -42,6 +42,8 @@ import com.example.profilegit.ui.theme.AppTheme
 fun UserListItem(
     item: User,
     onItemClick: (User) -> Unit,
+    onFavoriteClick: (User) -> Unit,
+    isFavorite: Boolean
 ) {
 
     Card(
@@ -65,9 +67,9 @@ fun UserListItem(
                 ProfileDetail(user = item)
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { onFavoriteClick(item) },
                 ) {
-                    val tint = if (item.isFavorite) Color.Yellow else Color.LightGray
+                    val tint = if (isFavorite) Color.Yellow else Color.LightGray
                     Icon(
                         imageVector = Icons.Filled.Star,
                         contentDescription = "Favorites",
@@ -131,5 +133,7 @@ fun PreviewUserListItem() {
             avatarUrl = "https://avatars.githubusercontent.com/u/1?v=4",
             login = "mojombo"
         ),
-        onItemClick = {})
+        onItemClick = {},
+        onFavoriteClick = {},
+        isFavorite = true)
 }

@@ -4,13 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.profilegit.data.dto.DetailsDto
-import com.example.profilegit.data.dto.UserDto
 import com.example.profilegit.domain.cache.entity.DetailsEntity
 import com.example.profilegit.domain.cache.entity.UserEntity
-import com.example.profilegit.domain.core.model.Details
-import com.example.profilegit.domain.core.model.User
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GitUsersDao {

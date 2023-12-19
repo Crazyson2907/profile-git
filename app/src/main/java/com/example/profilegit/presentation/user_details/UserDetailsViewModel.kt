@@ -1,5 +1,6 @@
 package com.example.profilegit.presentation.user_details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -85,19 +86,20 @@ class UserDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             val currentDetails =
                 (_detailState.value as? UserDetailState.DetailsSuccessfullyFetched)?.details
-            val updatedDetails = currentDetails?.copy(isFavorite = (currentDetails.isFavorite))
+            val updatedDetails = currentDetails?.copy(isFavorite = !(currentDetails.isFavorite)!!)
 
             val currentUser = (_userState.value as? UserDetailState.UserSuccessfullyFetched)?.user
-
             val updatedUser = currentUser?.copy(isFavorite = updatedDetails?.isFavorite ?: false)
 
             updatedDetails?.let {
                 _detailState.value = UserDetailState.DetailsSuccessfullyFetched(it)
                 saveDetailsUseCase.execute(it)
+                Log.d("ViewModel", "Favorite Toggled on Details: ${updatedDetails.isFavorite}")
             }
             updatedUser?.let {
                 _userState.value = UserDetailState.UserSuccessfullyFetched(it)
                 saveUsersToCacheUseCase.executeSingle(it)
+                Log.d("ViewModel", "User added to favorite: ${updatedUser.isFavorite}")
             }
         }
     }

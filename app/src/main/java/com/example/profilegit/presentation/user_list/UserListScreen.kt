@@ -42,9 +42,9 @@ fun UserListScreen(
         topBar = {
             Toolbar(isClicked = isClicked,
                 onIconButtonClicked = {
-                showCategorizedList = !showCategorizedList
-                isClicked = !isClicked
-            })
+                    showCategorizedList = !showCategorizedList
+                    isClicked = !isClicked
+                })
         }
     ) { innerPadding ->
         when (val currentState = state.value) {
@@ -55,13 +55,14 @@ fun UserListScreen(
                         .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.login })
                         .groupBy { it.login.first().toString() }
                         .map { Category(name = it.key, items = it.value) }
-                    CategorizedList(categories, navController, innerPadding)
+                    CategorizedList(categories, navController, innerPadding, viewModel)
                 } else {
-                    UserList(navController, currentState.list, innerPadding)
+                    UserList(navController, currentState.list, innerPadding, viewModel)
                 }
             }
 
             is UserListState.ErrorOccurred -> Text("Error: $currentState")
+            else -> {}
         }
     }
 
@@ -72,7 +73,8 @@ fun UserListScreen(
 fun UserList(
     navController: NavController,
     users: List<User>,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    viewModel: UserListViewModel
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -88,6 +90,10 @@ fun UserList(
                     item = user,
                     onItemClick = {
                         navController.navigate(Screen.UserDetailsScreen.route + "/${user.login}")
+                    },
+                    isFavorite = user.isFavorite,
+                    onFavoriteClick = {
+                        viewModel.toggleFavorite(user)
                     }
                 )
             }
@@ -100,7 +106,8 @@ fun UserList(
 private fun CategorizedList(
     categories: List<Category>,
     navController: NavHostController,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    viewModel: UserListViewModel
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -114,10 +121,14 @@ private fun CategorizedList(
                 stickyHeader {
                     CategoryHeader(text = category.name)
                 }
-                items(category.items) { text ->
-                    UserListItem(item = text, onItemClick = {
+                items(category.items) { user ->
+                    UserListItem(item = user, onItemClick = {
                         navController.navigate(Screen.UserDetailsScreen.route + "/${it.login}")
-                    })
+                    },
+                        isFavorite = user.isFavorite,
+                        onFavoriteClick = {
+                            viewModel.toggleFavorite(user)
+                        })
                 }
             }
         }

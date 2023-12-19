@@ -1,8 +1,10 @@
 package com.example.profilegit.presentation.user_list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.profilegit.common.Status
+import com.example.profilegit.domain.cache.usecase.SaveUsersToCacheUseCase
 import com.example.profilegit.domain.core.model.User
 import com.example.profilegit.domain.core.use_case.GetUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserListViewModel @Inject constructor(
-    private val getUsersUseCase: GetUsersUseCase
+    private val getUsersUseCase: GetUsersUseCase,
+    private val saveUsersToCacheUseCase: SaveUsersToCacheUseCase
 ) : ViewModel() {
 
     private var originalList = listOf<User>()
@@ -25,6 +28,7 @@ class UserListViewModel @Inject constructor(
 
     init {
         getUsers()
+        updateListState()
     }
 
     private fun getUsers() {
@@ -57,5 +61,21 @@ class UserListViewModel @Inject constructor(
             originalList
         }
         _state.value = UserListState.ListSuccessfullyFetched(listToShow)
+    }
+
+    fun toggleFavorite(user: User) {
+        viewModelScope.launch {
+            val users = (_state.value as? UserListState.ListSuccessfullyFetched)?.list
+            val updatedUsers = users?.map {
+                if (it.id == user.id) it.copy(isFavorite = !it.isFavorite) else it
+            }
+
+            _state.value = UserListState.ListSuccessfullyFetched(updatedUsers!!)
+
+            updatedUsers.find { it.id == user.id }?.let { updatedUser ->
+                saveUsersToCacheUseCase.executeSingle(updatedUser)
+                Log.d("ViewModel", "User added to favorite: ${updatedUser.isFavorite}")
+            }
+        }
     }
 }
