@@ -114,7 +114,7 @@ class UserListFeatureModule {
         )
 
     @Provides
-    fun provideGetUsersFromCacheUsecase(
+    fun provideGetUsersFromCacheUseCase(
         repository: UserCacheRepository
     ): GetUsersFromCacheUseCase =
         GetUsersFromCacheUseCase.Base(
@@ -122,7 +122,7 @@ class UserListFeatureModule {
         )
 
     @Provides
-    fun provideGetUserDetailsFromCacheUsecase(
+    fun provideGetUserDetailsFromCacheUseCase(
         repository: UserCacheRepository
     ): GetUserDetailsFromCacheUseCase =
         GetUserDetailsFromCacheUseCase.Base(

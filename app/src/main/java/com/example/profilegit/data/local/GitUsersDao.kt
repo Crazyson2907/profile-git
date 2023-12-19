@@ -18,6 +18,9 @@ interface GitUsersDao {
     @Query("SELECT * FROM user_entity")
     fun getUsers(): List<UserEntity>
 
+    @Query("SELECT * FROM user_entity WHERE id LIKE :id")
+    fun getUser(id: Int): UserEntity
+
     @Query("SELECT * FROM details_entity WHERE login LIKE :login")
     fun getUserDetails(login: String): DetailsEntity
 

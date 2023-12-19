@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.flow
 interface GetUsersUseCase {
     suspend fun execute(): Flow<Resource<List<User>>>
 
+    suspend fun executeSingle(id: Int): Flow<Resource<User>>
+
     class Base(
         private val usersFromApiUseCase: FetchUserListFromApiUseCase,
         private val getUsersFromCacheUseCase: GetUsersFromCacheUseCase
@@ -21,6 +23,12 @@ interface GetUsersUseCase {
                 } else {
                     return flow { emit(Resource.success(it)) }
                 }
+            }
+        }
+
+        override suspend fun executeSingle(id: Int): Flow<Resource<User>> {
+            getUsersFromCacheUseCase.executeSingle(id).let {
+                return flow { emit(Resource.success(it)) }
             }
         }
 

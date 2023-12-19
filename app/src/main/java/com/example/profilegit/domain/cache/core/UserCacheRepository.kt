@@ -12,4 +12,8 @@ interface UserCacheRepository {
     suspend fun getDetails(login: String): Details?
 
     suspend fun saveDetailsToCache(details: Details)
+
+    suspend fun saveOneUserToCache(user: User)
+
+    suspend fun getOneUserFromCache(id: Int): User
 }

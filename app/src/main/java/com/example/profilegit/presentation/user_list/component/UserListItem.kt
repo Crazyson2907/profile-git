@@ -17,7 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.StarOutline
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -67,10 +67,11 @@ fun UserListItem(
                 IconButton(
                     onClick = { /*TODO*/ },
                 ) {
+                    val tint = if (item.isFavorite) Color.Yellow else Color.LightGray
                     Icon(
-                        imageVector = Icons.Filled.StarOutline,
+                        imageVector = Icons.Filled.Star,
                         contentDescription = "Favorites",
-                        tint = Color.LightGray
+                        tint = tint
                     )
                 }
             }

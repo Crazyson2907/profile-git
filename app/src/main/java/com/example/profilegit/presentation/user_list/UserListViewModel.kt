@@ -38,19 +38,16 @@ class UserListViewModel @Inject constructor(
                             originalList = resource.data ?: listOf()
                             updateListState()
                         }
+
                         Status.ERROR -> {
                             _state.value = UserListState.ErrorOccurred
                         }
+
                         Status.LOADING -> {
                         }
                     }
                 }
         }
-    }
-
-    fun toggleSort() {
-        isSorted = !isSorted
-        updateListState()
     }
 
     private fun updateListState() {

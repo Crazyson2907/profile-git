@@ -37,4 +37,16 @@ class UserCacheRepositoryImpl(
         }
     }
 
+    override suspend fun saveOneUserToCache(user: User) {
+        withContext(ioDispatcher) {
+            dao.insertUser(user = user.toUserEntity())
+        }
+    }
+
+    override suspend fun getOneUserFromCache(id: Int): User = coroutineScope {
+        withContext(ioDispatcher) {
+            dao.getUser(id).toUser()
+        }
+    }
+
 }

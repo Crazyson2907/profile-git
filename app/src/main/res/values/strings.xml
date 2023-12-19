@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ProfileGit</string>
+    <string name="toolbar_name_user_details">Деталі користувача</string>
+    <string name="toolbar_name_users">Користувачі Github</string>
 </resources>
